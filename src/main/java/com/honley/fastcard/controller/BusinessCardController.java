@@ -27,6 +27,7 @@ public class BusinessCardController {
         try {
             return businessCardService.getBusinessCard(username);
         } catch (Exception e) {
+            System.out.println(e);
             Response response = new Response("bad request", 400);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }

@@ -96,6 +96,7 @@ public class UserService implements UserDetailsService {
                 .html("")
                 .css("")
                 .user(user)
+                .isActivated(false)
                 .build());
 
         mailSenderService.sendActivationMail(user.getEmail());
