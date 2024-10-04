@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Tag(name = "Business card controller")
-@RequestMapping("api/v1/business-cards")
+@RequestMapping("api/business-cards")
 @RestController
 @RequiredArgsConstructor
 public class BusinessCardController {

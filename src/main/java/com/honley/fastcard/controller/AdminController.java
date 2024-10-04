@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Tag(name = "Admin controllers")
-@RequestMapping("api/v1/admin")
+@RequestMapping("api/admin")
 @RestController
 @RequiredArgsConstructor
 public class AdminController {
