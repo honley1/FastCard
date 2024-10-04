@@ -23,8 +23,8 @@ public class AdminController {
         try {
             return businessCardService.activateBusinessCard(username);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            Response response = new Response("Internal Server Error", 500);
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
@@ -33,8 +33,8 @@ public class AdminController {
         try {
             return businessCardService.deleteBusinessCard(username);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            Response response = new Response("Internal Server Error", 500);
+            return ResponseEntity.badRequest().body(response);
         }
     }
 }

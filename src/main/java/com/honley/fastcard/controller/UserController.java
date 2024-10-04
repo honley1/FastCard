@@ -28,7 +28,7 @@ public class UserController {
         try {
             return createAuthToken.createAuthToken(authRequest);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
+            Response response = new Response("Internal Server Error", 500);
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -38,7 +38,7 @@ public class UserController {
         try {
             return userService.createNewUser(registrationUserDto);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
+            Response response = new Response("Internal Server Error", 500);
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -48,7 +48,7 @@ public class UserController {
         try {
             return userService.activateUser(link);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
+            Response response = new Response("Internal Server Error", 500);
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -58,7 +58,7 @@ public class UserController {
         try {
             return userService.getUserByUsername(username);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
+            Response response = new Response("Internal Server Error", 500);
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -68,7 +68,7 @@ public class UserController {
         try {
             return userService.getAllUser();
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
+            Response response = new Response("Internal Server Error", 500);
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -79,7 +79,7 @@ public class UserController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return userService.generateResetToken(username);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
+            Response response = new Response("Internal Server Error", 500);
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -89,7 +89,7 @@ public class UserController {
         try {
             return userService.updatePassword(token, newPassword);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
+            Response response = new Response("Internal Server Error", 500);
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -100,7 +100,7 @@ public class UserController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return userService.deleteUser(username);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
+            Response response = new Response("Internal Server Error", 500);
             return ResponseEntity.badRequest().body(response);
         }
     }

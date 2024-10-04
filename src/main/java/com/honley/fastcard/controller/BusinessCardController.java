@@ -27,9 +27,8 @@ public class BusinessCardController {
         try {
             return businessCardService.getBusinessCard(username);
         } catch (Exception e) {
-            System.out.println(e);
-            Response response = new Response("bad request", 400);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            Response response = new Response("Internal Server Error", 500);
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
@@ -39,8 +38,8 @@ public class BusinessCardController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return businessCardService.updateBusinessCard(username, html, css);
         } catch (Exception e) {
-            Response response = new Response("bad request", 400);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            Response response = new Response("Internal Server Error", 500);
+            return ResponseEntity.badRequest().body(response);
         }
     }
 }
