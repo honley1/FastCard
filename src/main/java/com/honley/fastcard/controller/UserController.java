@@ -2,7 +2,7 @@ package com.honley.fastcard.controller;
 
 import com.honley.fastcard.DTO.JwtRequest;
 import com.honley.fastcard.DTO.RegisterUserDTO;
-import com.honley.fastcard.response.Response;
+import com.honley.fastcard.response.ResponseWithMessage;
 import com.honley.fastcard.service.AuthService;
 import com.honley.fastcard.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +28,7 @@ public class UserController {
         try {
             return createAuthToken.createAuthToken(authRequest);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -38,7 +38,7 @@ public class UserController {
         try {
             return userService.createNewUser(registrationUserDto);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -48,7 +48,7 @@ public class UserController {
         try {
             return userService.activateUser(link);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -58,7 +58,7 @@ public class UserController {
         try {
             return userService.getUserByUsername(username);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -68,7 +68,7 @@ public class UserController {
         try {
             return userService.getAllUser();
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -79,7 +79,7 @@ public class UserController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return userService.generateResetToken(username);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -89,7 +89,7 @@ public class UserController {
         try {
             return userService.updatePassword(token, newPassword);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -100,7 +100,7 @@ public class UserController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return userService.deleteUser(username);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }

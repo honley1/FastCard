@@ -1,7 +1,7 @@
 package com.honley.fastcard.controller;
 
 
-import com.honley.fastcard.response.Response;
+import com.honley.fastcard.response.ResponseWithMessage;
 import com.honley.fastcard.service.BusinessCardService;
 import com.honley.fastcard.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +27,7 @@ public class BusinessCardController {
         try {
             return businessCardService.getBusinessCard(username);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -38,7 +38,7 @@ public class BusinessCardController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return businessCardService.updateBusinessCard(username, html, css);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }

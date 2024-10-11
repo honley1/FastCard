@@ -1,6 +1,5 @@
 package com.honley.fastcard.service;
 
-import com.honley.fastcard.DTO.ApplicationDTO;
 import com.honley.fastcard.DTO.CreateApplicationDTO;
 import com.honley.fastcard.entity.ApplicationEntity;
 import com.honley.fastcard.entity.ApplicationStatus;
@@ -9,7 +8,8 @@ import com.honley.fastcard.entity.UserEntity;
 import com.honley.fastcard.repository.ApplicationRepository;
 import com.honley.fastcard.repository.BusinessCardRepository;
 import com.honley.fastcard.repository.UserRepository;
-import com.honley.fastcard.response.Response;
+import com.honley.fastcard.response.ResponseWithData;
+import com.honley.fastcard.response.ResponseWithMessage;
 import com.honley.fastcard.utils.GetObjects;
 import com.honley.fastcard.utils.SendApplication;
 import lombok.AllArgsConstructor;
@@ -28,11 +28,11 @@ public class ApplicationService {
 
     public ResponseEntity<?> createApplication(String username, CreateApplicationDTO applicationDTO) {
         if (userRepository.findByUsername(username).isEmpty()) {
-            Response response = new Response("User not found", 404);
+            ResponseWithMessage response = new ResponseWithMessage(false, "User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         if (applicationRepository.findByUser(userRepository.findByUsername(username).get()).isPresent()) {
-            Response response = new Response("Application already exist", 409);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Application already exist");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
 
@@ -56,16 +56,16 @@ public class ApplicationService {
                                         application.getPhoneNumber(),
                                         application.getUser().getUsername());
 
-        return ResponseEntity.ok(GetObjects.getApplicationObject(application));
+        return ResponseEntity.ok(new ResponseWithData<>(true, GetObjects.getApplicationObject(application)));
     }
 
     public ResponseEntity<?> closeApplication(String username) {
         if (userRepository.findByUsername(username).isEmpty()) {
-            Response response = new Response("User not found", 404);
+            ResponseWithMessage response = new ResponseWithMessage(false, "User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         if (applicationRepository.findByUser(userRepository.findByUsername(username).get()).isEmpty()) {
-            Response response = new Response("Application not found", 404);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Application not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
@@ -75,6 +75,6 @@ public class ApplicationService {
         application.setStatus(ApplicationStatus.CLOSED);
         applicationRepository.save(application);
 
-        return ResponseEntity.ok(GetObjects.getApplicationObject(application));
+        return ResponseEntity.ok(new ResponseWithData<>(false, GetObjects.getApplicationObject(application)));
     }
 }

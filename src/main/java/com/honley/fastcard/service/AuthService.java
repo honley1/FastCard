@@ -3,7 +3,7 @@ package com.honley.fastcard.service;
 import com.honley.fastcard.DTO.JwtRequest;
 import com.honley.fastcard.DTO.JwtResponse;
 import com.honley.fastcard.repository.UserRepository;
-import com.honley.fastcard.response.Response;
+import com.honley.fastcard.response.ResponseWithMessage;
 import com.honley.fastcard.utils.JwtTokenUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class AuthService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            Response response = new Response("Incorrect login or password", 401);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Incorrect login or password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 

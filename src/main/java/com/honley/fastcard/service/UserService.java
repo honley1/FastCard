@@ -11,7 +11,8 @@ import com.honley.fastcard.repository.BusinessCardRepository;
 import com.honley.fastcard.repository.PasswordResetTokenRepository;
 import com.honley.fastcard.repository.RoleRepository;
 import com.honley.fastcard.repository.UserRepository;
-import com.honley.fastcard.response.Response;
+import com.honley.fastcard.response.ResponseWithData;
+import com.honley.fastcard.response.ResponseWithMessage;
 import com.honley.fastcard.utils.EmailValidator;
 import com.honley.fastcard.utils.GetObjects;
 import jakarta.mail.MessagingException;
@@ -56,19 +57,19 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<?> createNewUser(@RequestBody RegisterUserDTO registerUserDTO) throws MessagingException {
         if (registerUserDTO.getPassword().length() < 8) {
-            Response response = new Response("Password is too short", 400);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Password is too short");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         if (userRepository.findByUsername(registerUserDTO.getUsername()).isPresent()) {
-            Response response = new Response("Username already taken", 409);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Username already taken");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
         if (userRepository.findByEmail(registerUserDTO.getEmail()).isPresent()) {
-            Response response = new Response("Email already taken", 409);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Email already taken");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
         if (!EmailValidator.validateEmail(registerUserDTO.getEmail())) {
-            Response response = new Response("Invalid email format", 400);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Invalid email format");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
@@ -101,16 +102,16 @@ public class UserService implements UserDetailsService {
 
         mailSenderService.sendActivationMail(user.getEmail());
 
-        return ResponseEntity.ok(GetObjects.getUserObject(user, businessCard));
+        return ResponseEntity.ok(new ResponseWithData<>(true, GetObjects.getUserObject(user, businessCard)));
     }
 
     public ResponseEntity<?> activateUser(String activationLink) {
         if (userRepository.findByActivationLink(activationLink).isEmpty()) {
-            Response response = new Response("Incorrect activation link", 400);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Incorrect activation link");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         if (userRepository.existsByActivationLinkAndIsActivatedTrue(activationLink)) {
-            Response response = new Response("Account has already been activated", 400);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Account has already been activated");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
@@ -119,18 +120,18 @@ public class UserService implements UserDetailsService {
         user.setIsActivated(true);
         userRepository.save(user);
 
-        return ResponseEntity.ok(GetObjects.getUserObject(user, user.getBusinessCard()));
+        return ResponseEntity.ok(new ResponseWithData<>(true, GetObjects.getUserObject(user, user.getBusinessCard())));
     }
 
     public ResponseEntity<?> getUserByUsername(String username) {
         if (userRepository.findByUsername(username).isEmpty()) {
-            Response response = new Response("User not found", 404);
+            ResponseWithMessage response = new ResponseWithMessage(false, "User not found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
         UserEntity user = userRepository.findByUsername(username).get();
 
-        return ResponseEntity.ok(GetObjects.getUserObject(user, user.getBusinessCard()));
+        return ResponseEntity.ok(new ResponseWithData<>(true, GetObjects.getUserObject(user, user.getBusinessCard())));
     }
 
     public Boolean isUserActivated(String authUsername) {
@@ -145,12 +146,12 @@ public class UserService implements UserDetailsService {
             userDTOS.add(GetObjects.getUserObject(user, user.getBusinessCard()));
         }
 
-        return ResponseEntity.ok(userDTOS);
+        return ResponseEntity.ok(new ResponseWithData<>(true, userDTOS));
     }
 
     public ResponseEntity<?> generateResetToken(String username) throws MessagingException {
         if (userRepository.findByUsername(username).isEmpty()) {
-            Response response = new Response("User not found", 404);
+            ResponseWithMessage response = new ResponseWithMessage(false, "User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
@@ -164,16 +165,16 @@ public class UserService implements UserDetailsService {
 
         mailSenderService.sendResetPasswordMail(user.getEmail());
 
-        return ResponseEntity.ok(TokenDTO.builder()
+        return ResponseEntity.ok(new ResponseWithData<>(true, TokenDTO.builder()
                 .id(tokenEntity.getId())
                 .token(tokenEntity.getToken())
                 .user(GetObjects.getUserObject(tokenEntity.getUser(), tokenEntity.getUser().getBusinessCard()))
-                .build());
+                .build()));
     }
 
     public ResponseEntity<?> updatePassword(String token, String newPassword) {
         if (passwordResetTokenRepository.findByToken(token).isEmpty()) {
-            Response response = new Response("Invalid or expired token", 400);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Invalid or expired token");
             return ResponseEntity.ok(response);
         }
 
@@ -184,12 +185,12 @@ public class UserService implements UserDetailsService {
 
         passwordResetTokenRepository.delete(resetToken);
 
-        return ResponseEntity.ok(GetObjects.getUserObject(user, user.getBusinessCard()));
+        return ResponseEntity.ok(new ResponseWithData<>(true, GetObjects.getUserObject(user, user.getBusinessCard())));
     }
 
     public ResponseEntity<?> deleteUser(String username) {
         if (userRepository.findByUsername(username).isEmpty()) {
-            Response response = new Response("User not found", 404);
+            ResponseWithMessage response = new ResponseWithMessage(false, "User not found");
             return ResponseEntity.badRequest().body(response);
         }
 
@@ -199,6 +200,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         userRepository.delete(user);
 
-        return ResponseEntity.ok(GetObjects.getUserObject(user, user.getBusinessCard()));
+        return ResponseEntity.ok(new ResponseWithData<>(true, GetObjects.getUserObject(user, user.getBusinessCard())));
     }
 }

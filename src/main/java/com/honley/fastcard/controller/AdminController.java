@@ -1,11 +1,10 @@
 package com.honley.fastcard.controller;
 
-import com.honley.fastcard.response.Response;
+import com.honley.fastcard.response.ResponseWithMessage;
 import com.honley.fastcard.service.BusinessCardService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,7 @@ public class AdminController {
         try {
             return businessCardService.activateBusinessCard(username);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -33,7 +32,7 @@ public class AdminController {
         try {
             return businessCardService.deleteBusinessCard(username);
         } catch (Exception e) {
-            Response response = new Response("Internal Server Error", 500);
+            ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
         }
     }
