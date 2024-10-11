@@ -1,6 +1,8 @@
 package com.honley.fastcard.service;
 
+import com.honley.fastcard.entity.ApplicationEntity;
 import com.honley.fastcard.entity.BusinessCardEntity;
+import com.honley.fastcard.repository.ApplicationRepository;
 import com.honley.fastcard.repository.BusinessCardRepository;
 import com.honley.fastcard.repository.UserRepository;
 import com.honley.fastcard.response.ResponseWithData;
@@ -18,6 +20,7 @@ public class BusinessCardService {
 
     private final UserRepository userRepository;
     private final BusinessCardRepository businessCardRepository;
+    private final ApplicationService applicationService;
 
     public ResponseEntity<?> getBusinessCard(String username) {
         if (!businessCardRepository.findByUser(
@@ -51,11 +54,12 @@ public class BusinessCardService {
 
         businessCard.setIsActivated(true);
         businessCardRepository.save(businessCard);
+        applicationService.closeApplication(username);
 
         return ResponseEntity.ok(new ResponseWithData<>(true, GetObjects.getBusinessCardObject(businessCard)));
     }
 
-    public ResponseEntity<?> deleteBusinessCard(String username) {
+    public ResponseEntity<?> closeBusinessCard(String username) {
         if (userRepository.findByUsername(username).isEmpty()) {
             ResponseWithMessage response = new ResponseWithMessage(false, "User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -67,8 +71,7 @@ public class BusinessCardService {
 
         BusinessCardEntity businessCard = businessCardRepository.findByUser(
                 userRepository.findByUsername(username).get()).get();
-
-        businessCardRepository.delete(businessCard);
+        businessCard.setIsActivated(false);
 
         return ResponseEntity.ok(new ResponseWithData<>(false, GetObjects.getBusinessCardObject(businessCard)));
     }
@@ -90,7 +93,6 @@ public class BusinessCardService {
         businessCard.setCss(css);
 
         businessCardRepository.save(businessCard);
-
 
         return ResponseEntity.ok(new ResponseWithData<>(true, GetObjects.getBusinessCardObject(businessCard)));
     }

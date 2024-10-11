@@ -63,7 +63,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity getAllUser() {
         try {
             return userService.getAllUser();

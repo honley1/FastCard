@@ -30,7 +30,7 @@ public class AdminController {
     @DeleteMapping("/delete-business-card")
     public ResponseEntity deleteBusinessCard(@RequestParam String username) {
         try {
-            return businessCardService.deleteBusinessCard(username);
+            return businessCardService.closeBusinessCard(username);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.badRequest().body(response);
