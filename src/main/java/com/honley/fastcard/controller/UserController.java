@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @PutMapping("/update-password")
-    public ResponseEntity updatePassword(@RequestParam String token, @RequestParam String newPassword) {
+    public ResponseEntity updatePassword(@RequestParam String token, @RequestBody String newPassword) {
         try {
             return userService.updatePassword(token, newPassword);
         } catch (Exception e) {

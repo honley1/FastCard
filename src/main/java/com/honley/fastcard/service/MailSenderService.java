@@ -33,12 +33,12 @@ public class MailSenderService {
         this.mailSender = mailSender;
     }
 
-    public void sendActivationMail(String to) throws MessagingException {
+    public void sendActivationMail(String to, String activationLink) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
         String subject = "Account activation on FastCard";
-        String htmlContent = getActivationHtmlContent(link);
+        String htmlContent = getActivationHtmlContent(link, activationLink);
 
         helper.setFrom(username);
         helper.setTo(to);
@@ -48,12 +48,12 @@ public class MailSenderService {
         mailSender.send(message);
     }
 
-    public void sendResetPasswordMail(String to) throws MessagingException {
+    public void sendResetPasswordMail(String to, String token) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
         String subject = "Password Reset";
-        String htmlContent = getResetPasswordHtmlContent(link);
+        String htmlContent = getResetPasswordHtmlContent(link, token);
 
         helper.setFrom(username);
         helper.setTo(to);
@@ -63,7 +63,7 @@ public class MailSenderService {
         mailSender.send(message);
     }
 
-    private String getActivationHtmlContent(String link) {
+    private String getActivationHtmlContent(String link, String activationLink) {
         return "<!DOCTYPE html>\n"
                 + "<html lang=\"en\">\n"
                 + "<head>\n"
@@ -129,16 +129,16 @@ public class MailSenderService {
                 + "        <p>Hello,</p>\n"
                 + "        <p>Thank you for joining FastCard!</p>\n"
                 + "        <p>Please activate your FastCard account by clicking the button below:</p>\n"
-                + "        <a href=\"" + link + "\" class=\"activation-button\" target=\"_blank\" rel=\"noopener noreferrer\">Activate Account</a>\n"
+                + "        <a href=\"" + link + "/activate/" + activationLink + "\" class=\"activation-button\" target=\"_blank\" rel=\"noopener noreferrer\">Activate Account</a>\n"
                 + "        <p>If the button doesn't work, you can also activate your account by following this link:</p>\n"
-                + "        <p><a href=\"" + link + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + link + "</a></p>\n"
+                + "        <p><a href=\"" + link + "/activate/" + activationLink + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + link + "/activate/" + activationLink + "</a></p>\n"
                 + "        <p class=\"signature\"><br>The FastCard Team</p>\n"
                 + "    </div>\n"
                 + "</body>\n"
                 + "</html>";
     }
 
-    private String getResetPasswordHtmlContent(String link) {
+    private String getResetPasswordHtmlContent(String link, String token) {
         return "<!DOCTYPE html>\n"
                 + "<html lang=\"en\">\n"
                 + "<head>\n"
@@ -204,9 +204,9 @@ public class MailSenderService {
                 + "        <p>Hello,</p>\n"
                 + "        <p>We received a request to reset your FastCard account password.</p>\n"
                 + "        <p>Please reset your password by clicking the button below:</p>\n"
-                + "        <a href=\"" + link + "\" class=\"reset-button\" target=\"_blank\" rel=\"noopener noreferrer\">Reset Password</a>\n"
+                + "        <a href=\"" + link + "/update-password?token=" + token + "\" class=\"reset-button\" target=\"_blank\" rel=\"noopener noreferrer\">Reset Password</a>\n"
                 + "        <p>If the button doesn't work, you can also reset your password by following this link:</p>\n"
-                + "        <p><a href=\"" + link + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + link + "</a></p>\n"
+                + "        <p><a href=\"" + link + "/update-password?token=" + token + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + link + "/update-password?token=" + token + "</a></p>\n"
                 + "        <p>If you didn't request a password reset, please ignore this email or contact support if you have questions.</p>\n"
                 + "        <p class=\"signature\"><br>The FastCard Team</p>\n"
                 + "    </div>\n"

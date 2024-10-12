@@ -100,7 +100,7 @@ public class UserService implements UserDetailsService {
                 .isActivated(false)
                 .build());
 
-        mailSenderService.sendActivationMail(user.getEmail());
+        mailSenderService.sendActivationMail(user.getEmail(), activationLink);
 
         return ResponseEntity.ok(new ResponseWithData<>(true, GetObjects.getUserObject(user, businessCard)));
     }
@@ -163,7 +163,7 @@ public class UserService implements UserDetailsService {
                 .user(user)
                 .build());
 
-        mailSenderService.sendResetPasswordMail(user.getEmail());
+        mailSenderService.sendResetPasswordMail(user.getEmail(), token);
 
         return ResponseEntity.ok(new ResponseWithData<>(true, TokenDTO.builder()
                 .id(tokenEntity.getId())
