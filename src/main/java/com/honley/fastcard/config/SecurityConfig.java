@@ -39,15 +39,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Настройка CORS
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/users/authenticate").permitAll()
-                        .requestMatchers("/api/v1/users/register").permitAll()
-                        .requestMatchers("/api/v1/users/activate/**").permitAll()
-                        .requestMatchers("/api/v1/users/**").authenticated()
-                        .requestMatchers("/api/v1/business-cards/**").permitAll()
-                        .requestMatchers("/api/v1/business-cards/all").authenticated()
-                        .requestMatchers("/api/v1/applications").authenticated()
-                        .requestMatchers("/api/v1/applications/**").authenticated()
-                        .requestMatchers("/api/v1/admin/**").authenticated()
+                        .requestMatchers("/api/users/authenticate").permitAll()
+                        .requestMatchers("/api/users/register").permitAll()
+                        .requestMatchers("/api/users/activate/**").permitAll()
+                        .requestMatchers("/api/users/**").authenticated()
+                        .requestMatchers("/api/business-cards/**").permitAll()
+                        .requestMatchers("/api/business-cards/all").authenticated()
+                        .requestMatchers("/api/applications").authenticated()
+                        .requestMatchers("/api/applications/**").authenticated()
+                        .requestMatchers("/api/admin/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
@@ -87,6 +87,6 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/v1/users/update-password");
+        return (web) -> web.ignoring().requestMatchers("/api/users/update-password");
     }
 }

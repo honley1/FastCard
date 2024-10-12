@@ -73,16 +73,21 @@ public class UserService implements UserDetailsService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-        RoleEntity userRole = roleRepository.findById(2L)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
         Set<RoleEntity> roles = new HashSet<>();
-        roles.add(userRole);
+
+        try {
+            RoleEntity userRole = roleRepository.findById(2L)
+                    .orElseThrow(() -> new RuntimeException("Role not found"));
+            roles.add(userRole);
+        } catch (RuntimeException e) {
+            System.err.println("Error occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseWithMessage(false, e.getMessage()));
+        }
 
         String username = registerUserDTO.getUsername();
         String email = registerUserDTO.getEmail();
         String password = passwordEncoder.encode(registerUserDTO.getPassword());
         String activationLink = UUID.randomUUID().toString();
-
 
         UserEntity user = userRepository.save(UserEntity.builder()
                 .username(username)
