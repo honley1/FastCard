@@ -75,14 +75,8 @@ public class UserService implements UserDetailsService {
 
         Set<RoleEntity> roles = new HashSet<>();
 
-        try {
-            RoleEntity userRole = roleRepository.findById(2L)
-                    .orElseThrow(() -> new RuntimeException("Role not found"));
-            roles.add(userRole);
-        } catch (RuntimeException e) {
-            System.err.println("Error occurred: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseWithMessage(false, e.getMessage()));
-        }
+        RoleEntity userRole = roleRepository.findById(2L).get();
+        roles.add(userRole);
 
         String username = registerUserDTO.getUsername();
         String email = registerUserDTO.getEmail();
