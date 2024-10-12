@@ -28,6 +28,7 @@ public class UserController {
         try {
             return createAuthToken.createAuthToken(authRequest);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }
@@ -38,6 +39,7 @@ public class UserController {
         try {
             return userService.createNewUser(registrationUserDto);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }
@@ -48,6 +50,7 @@ public class UserController {
         try {
             return userService.activateUser(link);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }
@@ -58,6 +61,7 @@ public class UserController {
         try {
             return userService.getUserByUsername(username);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }
@@ -68,6 +72,7 @@ public class UserController {
         try {
             return userService.getAllUser();
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }
@@ -79,6 +84,7 @@ public class UserController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return userService.generateResetToken(username);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }
@@ -89,6 +95,7 @@ public class UserController {
         try {
             return userService.updatePassword(token, newPassword);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }
@@ -100,6 +107,7 @@ public class UserController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return userService.deleteUser(username);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }

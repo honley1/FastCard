@@ -27,6 +27,7 @@ public class BusinessCardController {
         try {
             return businessCardService.getBusinessCard(username);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }
@@ -38,6 +39,7 @@ public class BusinessCardController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return businessCardService.updateBusinessCard(username, html, css);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }

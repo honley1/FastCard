@@ -28,6 +28,7 @@ public class ApplicationController {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             return applicationService.createApplication(username, applicationDTO);
         } catch (Exception e) {
+            System.out.println(e);
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
             return ResponseEntity.internalServerError().body(response);
         }
