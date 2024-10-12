@@ -23,7 +23,7 @@ public class AdminController {
             return businessCardService.activateBusinessCard(username);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 
@@ -33,7 +33,7 @@ public class AdminController {
             return businessCardService.closeBusinessCard(username);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 }

@@ -29,7 +29,7 @@ public class ApplicationController {
             return applicationService.createApplication(username, applicationDTO);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 }

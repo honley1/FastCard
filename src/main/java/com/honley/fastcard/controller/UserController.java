@@ -29,7 +29,7 @@ public class UserController {
             return createAuthToken.createAuthToken(authRequest);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 
@@ -39,7 +39,7 @@ public class UserController {
             return userService.createNewUser(registrationUserDto);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 
@@ -49,7 +49,7 @@ public class UserController {
             return userService.activateUser(link);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 
@@ -59,7 +59,7 @@ public class UserController {
             return userService.getUserByUsername(username);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 
@@ -69,7 +69,7 @@ public class UserController {
             return userService.getAllUser();
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 
@@ -80,7 +80,7 @@ public class UserController {
             return userService.generateResetToken(username);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 
@@ -90,7 +90,7 @@ public class UserController {
             return userService.updatePassword(token, newPassword);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 
@@ -101,7 +101,7 @@ public class UserController {
             return userService.deleteUser(username);
         } catch (Exception e) {
             ResponseWithMessage response = new ResponseWithMessage(false, "Internal Server Error");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.internalServerError().body(response);
         }
     }
 }
