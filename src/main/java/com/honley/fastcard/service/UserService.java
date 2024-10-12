@@ -76,6 +76,7 @@ public class UserService implements UserDetailsService {
         Set<RoleEntity> roles = new HashSet<>();
 
         RoleEntity userRole = roleRepository.findById(2L).get();
+        System.out.println(userRole);
         roles.add(userRole);
 
         String username = registerUserDTO.getUsername();
